@@ -1,0 +1,79 @@
+/* ===== SignIn.css ===== */
+/* Global reset */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #a18cd1, #fbc2eb, #d1c4e9);
+  background-size: 400% 400%;
+  animation: gradientAnimation 15s ease infinite;
+  color: #ffffff;
+}
+
+@keyframes gradientAnimation {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.signin-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: calc(100vh - 60px); /* 60px = navbar height */
+  padding-top: 60px;          /* avoid overlap with fixed navbar */
+}
+
+.signin-form {
+  background-color: rgba(30, 30, 30, 0.9); /* slightly translucent */
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
+  width: 350px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.signin-title {
+  text-align: center;
+  font-size: 24px;
+  color: #e0e0e0;
+}
+
+.signin-input {
+  padding: 0.7rem;
+  border-radius: 6px;
+  border: 1px solid #444;
+  background-color: #2a2a2a;
+  color: #fff;
+}
+
+.signin-input::placeholder {
+  color: #aaa;
+}
+
+.signin-button {
+  padding: 0.7rem;
+  border-radius: 6px;
+  border: none;
+  background-color: #007bff;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.signin-button:hover {
+  background-color: #0056cc;
+}
+
+.signin-error {
+  color: #ff4d4d;
+  text-align: center;
+  font-size: 14px;
+}
