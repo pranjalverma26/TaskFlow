@@ -9,9 +9,7 @@
 
 ---
 
-## 🌐 Live Demo (Optional)
-If deployed, add link here  
-👉 [https://projectup.netlify.app](https://projectup.netlify.app) ← _(example)_
+## 🌐 Live Demo 
 
 ---
 
