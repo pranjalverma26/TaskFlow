@@ -1,79 +1,75 @@
-/* ===== SignIn.css ===== */
-/* Global reset */
-* {
-  box-sizing: border-box;
-}
+/* ========= Shared Auth Styles ========= */
 
-body {
-  margin: 0;
-  padding: 0;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(135deg, #a18cd1, #fbc2eb, #d1c4e9);
-  background-size: 400% 400%;
-  animation: gradientAnimation 15s ease infinite;
-  color: #ffffff;
-}
-
-@keyframes gradientAnimation {
-  0%   { background-position: 0% 50%; }
-  50%  { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
-.signin-container {
+/* full‑screen gradient background */
+.auth-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: calc(100vh - 60px); /* 60px = navbar height */
-  padding-top: 60px;          /* avoid overlap with fixed navbar */
+  min-height: 100vh;
+  background: linear-gradient(135deg, #4facfe 0%, #8b6efc 50%, #f093fb 100%);
+  padding: 1rem;
 }
 
-.signin-form {
-  background-color: rgba(30, 30, 30, 0.9); /* slightly translucent */
+/* white card */
+.auth-box {
+  background: #fff;
+  width: 300px;
+  max-width: 100%;
   padding: 2rem;
-  border-radius: 12px;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
-  width: 350px;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+  border-radius: 14px;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
 }
 
-.signin-title {
+/* title */
+.auth-title {
   text-align: center;
-  font-size: 24px;
-  color: #e0e0e0;
+  margin-bottom: 1.25rem;
+  font-weight: 600;
 }
 
-.signin-input {
-  padding: 0.7rem;
-  border-radius: 6px;
-  border: 1px solid #444;
-  background-color: #2a2a2a;
-  color: #fff;
+/* form inputs */
+.auth-input {
+  width: 100%;
+  padding: 0.75rem;
+  margin-top: 0.7rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 0.95rem;
 }
 
-.signin-input::placeholder {
-  color: #aaa;
-}
-
-.signin-button {
-  padding: 0.7rem;
-  border-radius: 6px;
+/* gradient button */
+.auth-btn {
+  width: 100%;
+  padding: 0.75rem;
+  margin-top: 1.3rem;
   border: none;
-  background-color: #007bff;
+  border-radius: 8px;
+  background: linear-gradient(to right, #4facfe, #f093fb);
   color: #fff;
-  font-weight: bold;
+  font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: opacity 0.3s ease;
+}
+.auth-btn:hover {
+  opacity: 0.9;
 }
 
-.signin-button:hover {
-  background-color: #0056cc;
-}
+/* helper texts */
+.auth-error   { color: #ff4d4d; text-align:center; margin-top:0.5rem; }
+.auth-success { color: #4caf50; text-align:center; margin-top:0.5rem; }
 
-.signin-error {
-  color: #ff4d4d;
+.auth-switch {
   text-align: center;
-  font-size: 14px;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+}
+.auth-switch span {
+  color: #4facfe;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+/* small screens */
+@media (max-width: 420px) {
+  .auth-box { padding: 1.5rem; }
 }

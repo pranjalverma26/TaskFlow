@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { signin } from "./api";
 import { useAuth } from "./AuthContext";
 import "./SignIn.css";
@@ -8,67 +8,59 @@ const SignIn = () => {
   const [email, setEmail]       = useState("");
   const [password, setPassword] = useState("");
   const [error, setError]       = useState("");
-  const [info, setInfo]         = useState("");   // success banner
 
   const navigate  = useNavigate();
-  const location  = useLocation();
   const { login } = useAuth();
-
-  /* Show banner only once after redirect from Sign‑Up */
-  useEffect(() => {
-    if (location.state?.registered) {
-      setInfo("Account created! Please log in.");
-      // clear state so refresh won't repeat message
-      navigate(location.pathname, { replace: true, state: {} });
-    }
-  }, [location, navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
 
-    if (!email || !password) {
-      return setError("All fields are required.");
-    }
+    if (!email || !password) return setError("Both fields required");
 
     const res = await signin({ email, password });
 
     if (res.token) {
-      login(res.user, res.token); // store user + token
+      login(res.user, res.token);
       navigate("/home");
     } else {
-      setError(res.msg || "Invalid login.");
+      setError(res.msg || "Invalid credentials");
     }
   };
 
   return (
-    <div className="signin-container">
-      <form onSubmit={handleSubmit} className="signin-form">
-        <h2 className="signin-title">Sign In</h2>
+    <div className="auth-container">
+      <div className="auth-box">
+        <h2 className="auth-title">Login</h2>
 
-        {info  && <p className="signin-success">{info}</p>}
-        {error && <p className="signin-error">{error}</p>}
+        {error && <p className="auth-error">{error}</p>}
 
-        <input
-          type="email"
-          className="signin-input"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
+        <form onSubmit={handleSubmit} className="auth-form">
+          <input
+            type="email"
+            placeholder="Email"
+            className="auth-input"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
 
-        <input
-          type="password"
-          className="signin-input"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
+          <input
+            type="password"
+            placeholder="Password"
+            className="auth-input"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
 
-        <button type="submit" className="signin-button">
-          Sign In
-        </button>
-      </form>
+          <button type="submit" className="auth-btn">
+            Login
+          </button>
+        </form>
+
+        <p className="auth-switch">
+          Need an account?{" "}
+          <span onClick={() => navigate("/signup")}>Sign Up</span>
+        </p>
+      </div>
     </div>
   );
 };
