@@ -1,0 +1,164 @@
+.dashboard-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.summary-cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+}
+
+.card {
+  background: #f3e8ff;
+  border-radius: 10px;
+  padding: 1rem;
+  font-weight: 500;
+  color: #6c2bd9;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+.card-purple {
+  background: #f3e8ff;
+  color: #6c2bd9;
+}
+.card-green {
+  background: #d1fae5;
+  color: #065f46;
+}
+.card-orange {
+  background: #feedd6;
+  color: #92400e;
+}
+.card-red {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.filters {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.filters button {
+  background: #fff;
+  border: 1px solid #ddd;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.main-content {
+  display: flex;
+  gap: 1.5rem;
+}
+
+/* Left Task List */
+.task-list {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.task-card {
+  background: #fff;
+  padding: 1rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.task-card h4 {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.tag {
+  font-size: 0.75rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 12px;
+  font-weight: 600;
+}
+.tag-low {
+  background: #d1fae5;
+  color: #065f46;
+}
+.tag-high {
+  background: #fee2e2;
+  color: #991b1b;
+}
+.tag-medium {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.task-footer {
+  margin-top: 0.5rem;
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  color: #555;
+}
+
+.status {
+  font-weight: 600;
+}
+.status.pending {
+  color: #b45309;
+}
+.status.done {
+  color: #059669;
+}
+
+/* Right Statistics */
+.task-stats {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.stat-box {
+  background: #fff;
+  padding: 1rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+.stat-box h4 {
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.stat-item {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.progress-bar {
+  height: 8px;
+  background: #eee;
+  border-radius: 5px;
+  margin-top: 0.5rem;
+  overflow: hidden;
+}
+.progress {
+  height: 100%;
+  background: #6c2bd9;
+}
+.activity-item {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}

@@ -1,21 +1,29 @@
 import React from 'react';
 import { FaUserCircle } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
+import './Navbar.css';
 
 const Navbar = () => {
   return (
-    <div style={{
-      height: '60px',
-      backgroundColor: '#fff',
-      borderBottom: '1px solid #e5e7eb',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      padding: '0 24px'
-    }}>
-      <h3 style={{ color: '#7c3aed', fontWeight: '700' }}>Hey, Hexagon</h3>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '10px', color: '#374151' }}>
-        <FaUserCircle size={22} />
-        <span style={{ fontSize: '14px' }}>hexagon@gmail.com</span>
+    <div className="navbar">
+      <div className="navbar-left">
+        <h2 className="greeting-text">Hey, Hexagon</h2>
+      </div>
+
+      <div className="navbar-right">
+        <div className="user-info">
+          <FaUserCircle className="user-icon" />
+          <span className="user-email">hexagon@gmail.com</span>
+        </div>
+
+        <div className="auth-buttons">
+          <Link to="/signin">
+            <button className="btn login-btn">Login</button>
+          </Link>
+          <Link to="/signup">
+            <button className="btn signup-btn">Sign Up</button>
+          </Link>
+        </div>
       </div>
     </div>
   );

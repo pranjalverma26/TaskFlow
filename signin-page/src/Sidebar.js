@@ -1,59 +1,33 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { FaHome, FaClock, FaCheckCircle } from 'react-icons/fa';
-
-const linkStyle = {
-  display: 'flex',
-  alignItems: 'center',
-  gap: '10px',
-  padding: '12px 16px',
-  textDecoration: 'none',
-  borderRadius: '8px',
-  fontWeight: '500',
-  color: '#4b5563',
-  transition: 'all 0.2s ease'
-};
-
-const activeStyle = {
-  backgroundColor: '#ede9fe',
-  color: '#7c3aed',
-  fontWeight: '600'
-};
+import { FaTachometerAlt, FaTasks, FaCheckCircle, FaPlus } from 'react-icons/fa';
+import './Sidebar.css';
 
 const Sidebar = () => {
   return (
-    <div style={{
-      width: '250px',
-      backgroundColor: '#fff',
-      borderRight: '1px solid #e5e7eb',
-      display: 'flex',
-      flexDirection: 'column',
-      padding: '20px'
-    }}>
-      <h2 style={{ color: '#7c3aed', marginBottom: '30px' }}>TaskFlow</h2>
-
-      <NavLink to="/" style={({ isActive }) => isActive ? { ...linkStyle, ...activeStyle } : linkStyle}>
-        <FaHome /> Dashboard
-      </NavLink>
-      <NavLink to="/pending" style={({ isActive }) => isActive ? { ...linkStyle, ...activeStyle } : linkStyle}>
-        <FaClock /> Pending Tasks
-      </NavLink>
-      <NavLink to="/completed" style={({ isActive }) => isActive ? { ...linkStyle, ...activeStyle } : linkStyle}>
-        <FaCheckCircle /> Completed Tasks
-      </NavLink>
-
-      {/* Optional Pro Tip Section */}
-      <div style={{
-        marginTop: '40px',
-        backgroundColor: '#f3f4f6',
-        padding: '12px',
-        borderRadius: '8px',
-        fontSize: '12px',
-        color: '#6b7280'
-      }}>
-        <strong>Pro Tip</strong><br />
-        Use keyboard shortcuts to boost productivity!
+    <div className="sidebar-modern">
+      <div className="top-section">
+        <div className="logo-area">
+          <span role="img" aria-label="bolt">⚡</span>
+          <span className="logo-text">TaskFlow</span>
+        </div>
+        <div className="nav-links">
+          <NavLink to="/" end className="nav-link">
+            <FaTachometerAlt /> Dashboard
+          </NavLink>
+          <NavLink to="/pending" className="nav-link">
+            <FaTasks /> Pending Tasks
+          </NavLink>
+          <NavLink to="/completed" className="nav-link">
+            <FaCheckCircle /> Completed Tasks
+          </NavLink>
+          <NavLink to="/add-task" className="nav-link">
+            <FaPlus /> Add Task
+          </NavLink>
+        </div>
       </div>
+
+      
     </div>
   );
 };
