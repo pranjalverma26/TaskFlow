@@ -3,21 +3,19 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 require("dotenv").config();
 
-const app = express();
+const authRoutes = require("./routes/auth");
+const taskRoutes = require("./routes/tasks"); // Ensure this file exists
 
-// Middleware
+const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Routes
-app.use("/api", require("./routes/auth"));
+// Your actual backend routes
+app.use("/api", authRoutes);
+app.use("/api/tasks", taskRoutes);  // 👈 Make sure this is present
 
-// DB + Start server
-mongoose
-  .connect(process.env.MONGO_URI)
-  .then(() => {
-    app.listen(process.env.PORT, () =>
-      console.log(`✅ Server running on http://localhost:${process.env.PORT}`)
-    );
-  })
-  .catch((err) => console.error("❌ MongoDB connection error:", err));
+// Connect DB and Start Server
+mongoose.connect(process.env.MONGO_URI).then(() => {
+  console.log("MongoDB connected");
+  app.listen(5000, () => console.log("Server running on port 5000"));
+}).catch(err => console.error(err));

@@ -1,0 +1,52 @@
+/* CompletedProjects.css */
+
+.completed-task-page {
+  padding: 20px;
+}
+
+.task-card {
+  border: 1px solid #ccc;
+  border-left: 5px solid green;
+  border-radius: 5px;
+  padding: 16px;
+  margin-bottom: 15px;
+  background-color: #f4fff4;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.task-card h4 {
+  margin: 0 0 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.task-card p {
+  margin: 6px 0;
+}
+
+.task-card small {
+  color: #777;
+}
+
+.priority {
+  padding: 2px 8px;
+  font-size: 0.8rem;
+  border-radius: 12px;
+  background-color: #eee;
+}
+
+.priority.low {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.priority.medium {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.priority.high {
+  background-color: #f8d7da;
+  color: #721c24;
+}

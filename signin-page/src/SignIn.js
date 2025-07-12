@@ -21,7 +21,7 @@ const SignIn = () => {
 
     if (res.token) {
       login(res.user, res.token);
-      navigate("/home");
+      navigate("/");
     } else {
       setError(res.msg || "Invalid credentials");
     }
