@@ -75,3 +75,12 @@
 .signup-btn:hover {
   background-color: #6b21a8;
 }
+
+.logout-btn {
+  background-color: #9f44ef;
+  color: white;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}

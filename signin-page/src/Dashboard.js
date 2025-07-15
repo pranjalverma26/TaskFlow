@@ -1,62 +1,114 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './Dashboard.css';
+import { getTasks } from './api';
+import { FaClipboardList, FaCheckCircle, FaHourglassHalf, FaChartPie } from 'react-icons/fa';
 
 const Dashboard = () => {
+  const [tasks, setTasks] = useState([]);
+  const [filteredTasks, setFilteredTasks] = useState([]);
+  const [filter, setFilter] = useState('All');
+
+  useEffect(() => {
+    const fetchTasks = async () => {
+      try {
+        const data = await getTasks();
+        setTasks(data);
+        setFilteredTasks(data);
+      } catch (err) {
+        console.error("Failed to fetch tasks", err);
+      }
+    };
+    fetchTasks();
+  }, []);
+
+  useEffect(() => {
+    const now = new Date();
+    const thisWeek = new Date();
+    thisWeek.setDate(now.getDate() + 7);
+
+    let filtered = [...tasks];
+    if (filter === 'Today') {
+      filtered = tasks.filter(t => new Date(t.deadline).toDateString() === now.toDateString());
+    } else if (filter === 'Week') {
+      filtered = tasks.filter(t => new Date(t.deadline) <= thisWeek);
+    } else if (['High', 'Medium', 'Low'].includes(filter)) {
+      filtered = tasks.filter(t => t.priority === filter);
+    }
+    setFilteredTasks(filtered);
+  }, [filter, tasks]);
+
+  const totalTasks = tasks.length;
+  const completed = tasks.filter(task => task.status === 'Completed');
+  const pending = tasks.filter(task => task.status !== 'Completed');
+
+  const low = tasks.filter(t => t.priority === 'Low').length;
+  const med = tasks.filter(t => t.priority === 'Medium').length;
+  const high = tasks.filter(t => t.priority === 'High').length;
+
+  const completionRate = totalTasks === 0 ? 0 : Math.round((completed.length / totalTasks) * 100);
+
   return (
     <div className="dashboard-container">
-      {/* Top Summary Cards */}
       <div className="summary-cards">
-        <Card title="Total Tasks" count={2} />
-        <Card title="Low Priority" count={2} color="green" />
-        <Card title="Medium Priority" count={0} color="orange" />
-        <Card title="High Priority" count={0} color="red" />
+        <Card title="Total Tasks" count={totalTasks} icon={<FaClipboardList />} />
+        <Card title="Low Priority" count={low} color="green" />
+        <Card title="Medium Priority" count={med} color="orange" />
+        <Card title="High Priority" count={high} color="red" />
       </div>
 
-      {/* Filters */}
       <div className="filters">
-        {['All', 'Today', 'Week', 'High', 'Medium', 'Low'].map((filter) => (
-          <button key={filter}>{filter}</button>
+        {['All', 'Today', 'Week', 'High', 'Medium', 'Low'].map((f) => (
+          <button
+            key={f}
+            className={filter === f ? 'active' : ''}
+            onClick={() => setFilter(f)}
+          >
+            {f}
+          </button>
         ))}
       </div>
 
-      {/* Content Area */}
       <div className="main-content">
-        {/* Left: Task List */}
         <div className="task-list">
-          <TaskCard title="Task 2" tag="Low" due="May 05" note="ASAP DO IT NOW" status="Pending" />
-          <TaskCard title="Task New" tag="Low" due="May 01" note="ASAP" status="Done" />
+          {filteredTasks.map(task => (
+            <TaskCard
+              key={task._id}
+              title={task.title}
+              tag={task.priority}
+              due={task.deadline}
+              note={task.description}
+              status={task.status === "Completed" ? "Done" : "Pending"}
+            />
+          ))}
         </div>
 
-        {/* Right: Statistics */}
-        <div className="task-stats">
-          <div className="stat-box">
-            <h4>Task Statistics</h4>
-            <div className="stat-item"><span>Total Tasks</span><span>2</span></div>
-            <div className="stat-item"><span>Completed</span><span>1</span></div>
-            <div className="stat-item"><span>Pending</span><span>1</span></div>
-            <div className="stat-item"><span>Completion Rate</span><span>50%</span></div>
-            <div className="progress-bar">
-              <div className="progress" style={{ width: '50%' }} />
-            </div>
-          </div>
-
-          <div className="stat-box">
-            <h4>Recent Activity</h4>
-            <div className="activity-item"><strong>Task 2</strong><span>Pending</span></div>
-            <div className="activity-item"><strong>Task New</strong><span>Done</span></div>
-          </div>
+        <div className="task-stats-cards side-grid">
+          <Card title="Total Tasks" count={totalTasks} color="blue" icon={<FaClipboardList />} />
+          <Card title="Completed" count={completed.length} color="green" icon={<FaCheckCircle />} />
+          <Card title="Pending" count={pending.length} color="orange" icon={<FaHourglassHalf />} />
+          <Card title="Completion Rate" count={`${completionRate}%`} color="purple" icon={<FaChartPie />} />
         </div>
       </div>
     </div>
   );
 };
-
-const Card = ({ title, count, color = 'purple' }) => (
+const Card = ({ title, count, color = 'purple', icon }) => (
   <div className={`card card-${color}`}>
-    <span>{title}</span>
+    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <span>{title}</span>
+      {icon && <span>{icon}</span>}
+    </div>
     <h3>{count}</h3>
+
+    {/* Only show progress bar for Completion Rate */}
+    {title === 'Completion Rate' && (
+      <div className="progress-bar">
+        <div className="progress-fill" style={{ width: count }}></div>
+      </div>
+    )}
   </div>
 );
+
 
 const TaskCard = ({ title, tag, due, note, status }) => (
   <div className="task-card">

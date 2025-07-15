@@ -23,7 +23,7 @@ const SignUp = () => {
     const res = await signup(form);
 
     if (res.token) {
-      setDone(true);         // success message
+      setDone(true);        
     } else {
       setError(res.msg || "Sign‑up failed");
     }

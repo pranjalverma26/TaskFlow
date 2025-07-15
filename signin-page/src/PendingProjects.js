@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { getTasks } from "./api";
-import AddTask from "./AddTask"; // ⬅ import your modal component
+import AddTask from "./AddTask"; 
 import "./PendingProjects.css";
 
 const PendingProjects = () => {
@@ -39,13 +39,12 @@ const PendingProjects = () => {
         ))
       )}
 
-      {/* Modal for editing task */}
       {editTask && (
         <AddTask
           initialData={editTask}
           onUpdate={() => {
             fetchTasks();
-            setEditTask(null); // close modal after update
+            setEditTask(null); 
           }}
         />
       )}

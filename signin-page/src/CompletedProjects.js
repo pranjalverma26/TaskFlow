@@ -1,18 +1,24 @@
 import React, { useEffect, useState } from "react";
-import { getTasks } from "./api";
+import { getTasks, deleteTask } from "./api";
 import "./CompletedProjects.css";
 
 const CompletedProjects = () => {
   const [tasks, setTasks] = useState([]);
 
+  const fetchTasks = async () => {
+    const data = await getTasks();
+    const completed = data.filter((task) => task.status === "Completed");
+    setTasks(completed);
+  };
+
   useEffect(() => {
-    const fetchTasks = async () => {
-      const data = await getTasks();
-      const completed = data.filter((task) => task.status === "Completed");
-      setTasks(completed);
-    };
     fetchTasks();
   }, []);
+
+  const handleDelete = async (id) => {
+    await deleteTask(id);
+    fetchTasks(); // Refresh the list
+  };
 
   return (
     <div className="completed-task-page">
@@ -22,12 +28,20 @@ const CompletedProjects = () => {
       ) : (
         tasks.map((task) => (
           <div className="task-card" key={task._id}>
-            <h4>
-              {task.title}{" "}
-              <span className={`priority ${task.priority.toLowerCase()}`}>
-                {task.priority}
-              </span>
-            </h4>
+            <div className="task-header">
+              <h4>
+                {task.title}{" "}
+                <span className={`priority ${task.priority.toLowerCase()}`}>
+                  {task.priority}
+                </span>
+              </h4>
+              <button
+                className="delete-btn"
+                onClick={() => handleDelete(task._id)}
+              >
+                ❌
+              </button>
+            </div>
             <p>{task.description}</p>
             <small>Due: {task.deadline}</small>
           </div>
