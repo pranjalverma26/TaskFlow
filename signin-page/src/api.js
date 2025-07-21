@@ -1,6 +1,6 @@
 const API = "http://localhost:5000/api";
 
-// Utility to get the token header for auth-protected routes
+// 🔐 Utility to get the token header
 const getAuthHeader = () => {
   const token = localStorage.getItem("token");
   return token ? { Authorization: `Bearer ${token}` } : {};
@@ -23,55 +23,85 @@ export const signin = async (payload) => {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload),
   });
-
   const data = await res.json();
-  console.log("SIGNIN RESPONSE:", data); // ✅ Debugging
+  console.log("SIGNIN RESPONSE:", data);
   return data;
 };
 
-// 📝 Add a new task
-export const addTask = async (payload) => {
-  const res = await fetch(`${API}/tasks`, {
+// 📝 Add Task
+export const addTask = async (projectId, payload) => {
+  const res = await fetch(`${API}/tasks/${projectId}`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      ...getAuthHeader(), // 🔐 Auth header
+      ...getAuthHeader(),
     },
     body: JSON.stringify(payload),
   });
+
   return res.json();
 };
 
-// 📄 Get all tasks for the current user
+
+// 📥 Get all tasks
 export const getTasks = async () => {
   const res = await fetch(`${API}/tasks`, {
+    headers: { ...getAuthHeader() },
+  });
+  const data = await res.json();
+  if (!Array.isArray(data)) {
+    console.error("Invalid tasks response:", data);
+    return [];
+  }
+  return data;
+};
+
+// 🗑️ Delete project
+export const deleteProject = async (projectId) => {
+  const res = await fetch(`${API}/projects/${projectId}`, {
+    method: "DELETE",
     headers: {
-      ...getAuthHeader(), // 🔐 Auth header
+      ...getAuthHeader(),
     },
   });
   return res.json();
 };
 
-// ✏️ Update a specific task by ID
+// ✏️ Update Project
+export const updateProject = async (projectId, payload) => {
+  const res = await fetch(`${API}/projects/${projectId}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      ...getAuthHeader(),
+    },
+    body: JSON.stringify(payload),
+  });
+
+  return res.json();
+};
+
+
+// ✏️ Update task
 export const updateTask = async (id, payload) => {
   const res = await fetch(`${API}/tasks/${id}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
-      ...getAuthHeader(), // 🔐 Auth header
+      ...getAuthHeader(),
     },
     body: JSON.stringify(payload),
   });
   return res.json();
 };
 
-// 🗑️ Delete a specific task by ID
+// 🗑️ Delete task
 export const deleteTask = async (id) => {
   try {
     const res = await fetch(`${API}/tasks/${id}`, {
       method: "DELETE",
       headers: {
-        ...getAuthHeader(), // 🔐 Auth header
+        ...getAuthHeader(),
       },
     });
     return await res.json();
@@ -79,4 +109,34 @@ export const deleteTask = async (id) => {
     console.error("Failed to delete task", err);
     return { msg: "Deletion failed" };
   }
+};
+
+// 📁 Add Project
+export const addProject = async (payload) => {
+  const res = await fetch(`${API}/projects`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      ...getAuthHeader(),
+    },
+    body: JSON.stringify(payload),
+  });
+  return res.json();
+};
+
+export const getProjects = async () => {
+  const res = await fetch(`${API}/projects`, {
+    headers: {
+      ...getAuthHeader(),
+    },
+  });
+
+  const data = await res.json();
+
+  // Add safety check
+  if (Array.isArray(data)) return data;
+  if (Array.isArray(data.projects)) return data.projects; // in case it's nested
+
+  console.error("Unexpected projects response:", data);
+  return [];
 };

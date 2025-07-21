@@ -1,0 +1,82 @@
+.navbar {
+  height: 64px;
+  background-color: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 2rem;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.navbar-section {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.navbar-greeting {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0;
+}
+
+.navbar-user {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.navbar-user-icon {
+  color: #7c3aed;
+  font-size: 1.5rem;
+}
+
+.navbar-user-email {
+  font-size: 0.95rem;
+  color: #4b5563;
+  white-space: nowrap;
+}
+
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.btn {
+  font-size: 0.85rem;
+  font-weight: 500;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.2s ease;
+  white-space: nowrap;
+}
+
+.btn-outline {
+  background-color: transparent;
+  color: #7c3aed;
+  border: 1px solid #7c3aed;
+}
+
+.btn-outline:hover {
+  background-color: #ede9fe;
+}
+
+.btn-primary {
+  background-color: #7c3aed;
+  color: #fff;
+  border: none;
+}
+
+.btn-primary:hover {
+  background-color: #6b21a8;
+}
+
+.btn-logout {
+  background-color: #9f44ef;
+  color: white;
+  border: none;
+}

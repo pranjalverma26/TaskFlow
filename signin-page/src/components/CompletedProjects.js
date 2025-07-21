@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getTasks, deleteTask } from "./api";
+import { getTasks, deleteTask } from "../api";
 import "./CompletedProjects.css";
 
 const CompletedProjects = () => {
@@ -22,7 +22,7 @@ const CompletedProjects = () => {
 
   return (
     <div className="completed-task-page">
-      <h2>Completed Tasks</h2>
+      <h3>Completed Tasks</h3>
       {tasks.length === 0 ? (
         <p>No completed tasks.</p>
       ) : (
@@ -30,8 +30,8 @@ const CompletedProjects = () => {
           <div className="task-card" key={task._id}>
             <div className="task-header">
               <h4>
-                {task.title}{" "}
-                <span className={`priority ${task.priority.toLowerCase()}`}>
+                {task.name}{" "}
+                <span className={`priority ${task.priority?.toLowerCase()}`}>
                   {task.priority}
                 </span>
               </h4>
@@ -43,7 +43,16 @@ const CompletedProjects = () => {
               </button>
             </div>
             <p>{task.description}</p>
-            <small>Due: {task.deadline}</small>
+            <small>
+              Due:{" "}
+              {task.deadline
+                ? new Date(task.deadline).toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })
+                : "No deadline"}
+            </small>
           </div>
         ))
       )}

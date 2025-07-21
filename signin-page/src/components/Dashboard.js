@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './Dashboard.css';
-import { getTasks } from './api';
+import { getTasks } from '../api';
 import { FaClipboardList, FaCheckCircle, FaHourglassHalf, FaChartPie } from 'react-icons/fa';
 
 const Dashboard = () => {
@@ -22,15 +22,31 @@ const Dashboard = () => {
   }, []);
 
   useEffect(() => {
+    if (filter === 'All') {
+      setFilteredTasks(tasks);
+      return;
+    }
+
     const now = new Date();
     const thisWeek = new Date();
     thisWeek.setDate(now.getDate() + 7);
 
     let filtered = [...tasks];
+
     if (filter === 'Today') {
-      filtered = tasks.filter(t => new Date(t.deadline).toDateString() === now.toDateString());
+      filtered = tasks.filter(t => {
+        if (!t.deadline) return false;
+        const deadlineDate = new Date(t.deadline);
+        if (isNaN(deadlineDate)) return false;
+        return deadlineDate.toDateString() === now.toDateString();
+      });
     } else if (filter === 'Week') {
-      filtered = tasks.filter(t => new Date(t.deadline) <= thisWeek);
+      filtered = tasks.filter(t => {
+        if (!t.deadline) return false;
+        const deadlineDate = new Date(t.deadline);
+        if (isNaN(deadlineDate)) return false;
+        return deadlineDate >= now && deadlineDate <= thisWeek;
+      });
     } else if (['High', 'Medium', 'Low'].includes(filter)) {
       filtered = tasks.filter(t => t.priority === filter);
     }
@@ -73,9 +89,13 @@ const Dashboard = () => {
           {filteredTasks.map(task => (
             <TaskCard
               key={task._id}
-              title={task.title}
+              title={task.name}
               tag={task.priority}
-              due={task.deadline}
+              due={task.deadline ? new Date(task.deadline).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric'
+              }) : 'No deadline'}
               note={task.description}
               status={task.status === "Completed" ? "Done" : "Pending"}
             />
@@ -92,6 +112,7 @@ const Dashboard = () => {
     </div>
   );
 };
+
 const Card = ({ title, count, color = 'purple', icon }) => (
   <div className={`card card-${color}`}>
     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -100,7 +121,6 @@ const Card = ({ title, count, color = 'purple', icon }) => (
     </div>
     <h3>{count}</h3>
 
-    {/* Only show progress bar for Completion Rate */}
     {title === 'Completion Rate' && (
       <div className="progress-bar">
         <div className="progress-fill" style={{ width: count }}></div>
@@ -108,7 +128,6 @@ const Card = ({ title, count, color = 'purple', icon }) => (
     )}
   </div>
 );
-
 
 const TaskCard = ({ title, tag, due, note, status }) => (
   <div className="task-card">

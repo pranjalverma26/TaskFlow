@@ -19,7 +19,7 @@
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
   border-left: 6px solid #8e44ad;
   transition: transform 0.2s ease;
-  position: relative;
+  position: relative; /* needed for absolute-positioned edit button */
 }
 
 .task-card:hover {
@@ -66,6 +66,7 @@
   color: #a71d2a;
 }
 
+/* Edit button styling */
 .edit-btn {
   position: absolute;
   top: 15px;
