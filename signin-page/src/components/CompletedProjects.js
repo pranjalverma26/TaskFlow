@@ -22,7 +22,7 @@ const CompletedProjects = () => {
 
   return (
     <div className="completed-task-page">
-      <h3>Completed Tasks</h3>
+      <h1>Completed Tasks</h1>
       {tasks.length === 0 ? (
         <p>No completed tasks.</p>
       ) : (

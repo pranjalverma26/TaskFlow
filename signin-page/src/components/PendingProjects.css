@@ -72,13 +72,16 @@
   top: 15px;
   right: 15px;
   background-color: transparent;
-  border: none;
-  cursor: pointer;
+  border: 1px solid #8e44ad;
+  border-radius: 6px;
+  padding: 5px 10px;
   color: #8e44ad;
-  font-size: 1.1rem;
-  transition: color 0.2s ease;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
 }
 
 .edit-btn:hover {
-  color: #5e3370;
+  background-color: #8e44ad;
+  color: #fff;
 }

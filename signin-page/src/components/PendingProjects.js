@@ -148,7 +148,8 @@ const PendingProjects = () => {
                 : "No deadline"}
             </small>
             <br />
-            <button onClick={() => setEditTask(task)}>✏️ Edit</button>
+           <button className="edit-btn" onClick={() => setEditTask(task)}>Edit</button>
+
           </div>
         ))
       )}

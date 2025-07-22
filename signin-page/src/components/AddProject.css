@@ -80,3 +80,7 @@
   border-radius: 8px;
   cursor: pointer;
 }
+/* Optional override in your global CSS */
+.Toastify__toast-container {
+  z-index: 9999 !important;
+}

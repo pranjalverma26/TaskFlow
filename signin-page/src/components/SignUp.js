@@ -1,87 +1,81 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { signup } from "../api";
-import "./SignUp.css";
+import axios from "axios";
+import "./SignIn.css"; // Using the same CSS file as SignIn
+import loginImage from "../assets/login-illustration.png"; // same image
 
 const SignUp = () => {
-  const [form, setForm] = useState({ name: "", email: "", password: "" });
-  const [error, setError] = useState("");
-  const [done, setDone]   = useState(false);
-
   const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
+  const [error, setError] = useState("");
 
-  const handleChange = (e) =>
-    setForm({ ...form, [e.target.name]: e.target.value });
+  const handleChange = (e) => {
+    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { name, email, password } = form;
+    setError("");
 
-    if (!name || !email || !password)
-      return setError("All fields required");
-
-    const res = await signup(form);
-
-    if (res.token) {
-      setDone(true);        
-    } else {
-      setError(res.msg || "Sign‑up failed");
+    try {
+      await axios.post("http://localhost:5000/api/signup", formData);
+      navigate("/signin");
+    } catch (err) {
+      setError(err.response?.data?.message || "Sign up failed");
     }
   };
 
   return (
-    <div className="auth-container">
-      <div className="auth-box">
-        <h2 className="auth-title">Create Account</h2>
-
-        {error && <p className="auth-error">{error}</p>}
-        {done  && (
-          <p className="auth-success">
-            Account created! <span onClick={() => navigate("/signin")}>Log in</span>
-          </p>
-        )}
-
-        {!done && (
-          <form onSubmit={handleSubmit} className="auth-form">
+    <div className="signin-container">
+      <div className="signin-card">
+        <div className="signin-left">
+          <img src={loginImage} alt="Sign up illustration" className="signin-image" />
+        </div>
+        <div className="signin-right">
+          <h2 className="signin-title">Create Account</h2>
+          <p className="signin-subtitle">Sign up to start your journey</p>
+          <form onSubmit={handleSubmit} className="signin-form">
+            <label>Name</label>
             <input
-              name="name"
               type="text"
-              placeholder="Full Name"
-              className="auth-input"
-              value={form.name}
+              name="name"
+              value={formData.name}
               onChange={handleChange}
+              required
+              placeholder="Enter your name"
             />
-
+            <label>Email</label>
             <input
-              name="email"
               type="email"
-              placeholder="Email"
-              className="auth-input"
-              value={form.email}
+              name="email"
+              value={formData.email}
               onChange={handleChange}
+              required
+              placeholder="Enter your email"
             />
-
+            <label>Password</label>
             <input
-              name="password"
               type="password"
-              placeholder="Password"
-              className="auth-input"
-              value={form.password}
+              name="password"
+              value={formData.password}
               onChange={handleChange}
+              required
+              placeholder="Create a password"
             />
-
-            <button type="submit" className="auth-btn">
-              Register
-            </button>
+            {error && <p className="signin-error">{error}</p>}
+            <button type="submit" className="signin-button">Sign Up</button>
           </form>
-        )}
-
-        {!done && (
-          <p className="auth-switch">
-            Have an account?{" "}
-            <span onClick={() => navigate("/signin")}>Sign In</span>
+          <p className="signup-prompt">
+            Already have an account?{" "}
+            <span className="signup-link" onClick={() => navigate("/signin")}>
+              Sign In
+            </span>
           </p>
-        )}
+        </div>
       </div>
     </div>
   );

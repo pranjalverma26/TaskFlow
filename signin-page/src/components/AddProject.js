@@ -1,4 +1,3 @@
-// src/components/AddProject.js
 import React, { useState } from "react";
 import { addProject } from "../api";
 import "./AddProject.css";
@@ -13,14 +12,21 @@ const AddProject = ({ onProjectAdded }) => {
 
     try {
       const res = await addProject({ name: projectName, description: projectDescription });
-      if (res.success) {
-        alert("Project added!");
+
+      if (res && res.success) {
         setProjectName("");
         setProjectDescription("");
         setIsModalOpen(false);
         onProjectAdded();
+
+        // Wait for modal to visually close before alerting
+        requestAnimationFrame(() => {
+          setTimeout(() => {
+            alert("Project added!");
+          }, 0);
+        });
       } else {
-        alert(res.message || "Project creation failed");
+        alert(res?.message || "Project creation failed");
       }
     } catch (err) {
       console.error("Add Project Error:", err);

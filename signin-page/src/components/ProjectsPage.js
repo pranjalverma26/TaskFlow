@@ -6,7 +6,7 @@ import {
   updateProject,
   addTask,
   updateTask,
-} from "../api"; // adjust the path if needed
+} from "../api";
 
 import "./ProjectsPage.css";
 import EditProjectModal from "./EditProjectModal";
@@ -40,8 +40,12 @@ const ProjectsPage = () => {
 
   const handleDeleteProject = async (projectId) => {
     if (!window.confirm("Are you sure you want to delete this project?")) return;
-    await deleteProject(projectId);
-    fetchProjects();
+    try {
+      await deleteProject(projectId);
+      fetchProjects();
+    } catch (err) {
+      console.error("Failed to delete project:", err);
+    }
   };
 
   const handleEditTaskClick = (task) => {
@@ -51,7 +55,8 @@ const ProjectsPage = () => {
   };
 
   const handleAddTaskClick = (projectId) => {
-    setSelectedProject(projects.find((p) => p._id === projectId));
+    const project = projects.find((p) => p._id === projectId);
+    setSelectedProject(project);
     setSelectedTask({
       name: "",
       description: "",
@@ -65,24 +70,36 @@ const ProjectsPage = () => {
 
   const handleDeleteTask = async (projectId, taskId) => {
     if (!window.confirm("Are you sure you want to delete this task?")) return;
-    await deleteTask(taskId);
-    fetchProjects();
+    try {
+      await deleteTask(taskId);
+      fetchProjects();
+    } catch (err) {
+      console.error("Failed to delete task:", err);
+    }
   };
 
   const handleSaveProject = async (formData) => {
-    await updateProject(selectedProject._id, formData);
-    setShowEditProjectModal(false);
-    fetchProjects();
+    try {
+      await updateProject(selectedProject._id, formData);
+      setShowEditProjectModal(false);
+      fetchProjects();
+    } catch (err) {
+      console.error("Failed to update project:", err);
+    }
   };
 
   const handleSaveTask = async (formData) => {
-    if (isNewTask) {
-      await addTask(selectedProject._id, formData);
-    } else {
-      await updateTask(selectedTask._id, formData);
+    try {
+      if (isNewTask) {
+        await addTask(selectedProject._id, formData);
+      } else {
+        await updateTask(selectedTask._id, formData);
+      }
+      setShowEditTaskModal(false);
+      fetchProjects();
+    } catch (err) {
+      console.error("Failed to save task:", err);
     }
-    setShowEditTaskModal(false);
-    fetchProjects();
   };
 
   return (
@@ -91,9 +108,14 @@ const ProjectsPage = () => {
         <div key={project._id} className="project-card">
           <div className="project-header">
             <h3>{project.name}</h3>
-            <div className="project-actions">
-              <button onClick={() => handleEditProjectClick(project)}>Edit Project</button>
-              <button onClick={() => handleDeleteProject(project._id)} className="delete-project-btn">
+            <div className="action-buttons">
+              <button className="btn" onClick={() => handleEditProjectClick(project)}>
+                Edit Project
+              </button>
+              <button
+                className="btn btn-danger"
+                onClick={() => handleDeleteProject(project._id)}
+              >
                 Delete Project
               </button>
             </div>
@@ -103,24 +125,26 @@ const ProjectsPage = () => {
             {project.tasks?.map((task) => (
               <div key={task._id} className="task-card">
                 <div className="task-info">
-                  <h4>{task.name}</h4> {/* ✅ Changed from task.title */}
+                  <h4>{task.name}</h4>
                   <p>{task.description}</p>
                   <p>Priority: {task.priority}</p>
                   <p>Status: {task.status}</p>
                   <p>Due: {task.deadline?.slice(0, 10)}</p>
                 </div>
-                <div className="task-actions">
-                  <button onClick={() => handleEditTaskClick(task)}>Edit</button>
+                <div className="action-buttons">
+                  <button className="btn" onClick={() => handleEditTaskClick(task)}>
+                    Edit
+                  </button>
                   <button
+                    className="btn btn-danger"
                     onClick={() => handleDeleteTask(project._id, task._id)}
-                    className="delete-task-btn"
                   >
                     Delete
                   </button>
                 </div>
               </div>
             ))}
-            <button className="add-task-btn" onClick={() => handleAddTaskClick(project._id)}>
+            <button className="btn add-task-btn" onClick={() => handleAddTaskClick(project._id)}>
               + Add Task
             </button>
           </div>
